@@ -7,14 +7,22 @@ import { Typography, Dropdown, Space, Divider, Col, Row, message, Upload, Button
 const { Title, Paragraph, Text, Link } = Typography;
 
 import '/src/assets/styles/MLPredictionPage.css';
+import { handleMLs } from '../api/handleMLs';
 
 
 
 export default function MLPredictionPage() {
+  const [file, setFile] = useState(null);
   
   const handleAPIRequest = () => {
-    
+    const formData = new FormData();
+    console.log("FILE", file);
+    formData.append('files', file);
+      handleMLs(formData).then((response) => {
+          console.log(response);
+      })
   }
+
     return (
         <div>
             <div className="ml_page_container">
@@ -87,7 +95,12 @@ export default function MLPredictionPage() {
                     <Title>ECG</Title>
                 </Row>
                 <Row>
-                <Dragger >
+                <Dragger 
+                  beforeUpload={(file) => {
+                    setFile(file);
+                    return false; // return false so file is not auto uploaded
+                  }}
+                >
                     <p className="ant-upload-drag-icon">
                     <InboxOutlined />
                     </p>
@@ -116,7 +129,9 @@ export default function MLPredictionPage() {
                         </p>
                     </Dragger>
                 </Row>
-                <Button onClick={() => {handleAPIRequest())}}>Click</Button>
+                <Button onClick={() => {
+                  handleAPIRequest()
+                }}>Click</Button>
             </div>
             
         </div>
