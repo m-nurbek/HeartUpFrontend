@@ -5,6 +5,8 @@ import './index.scss';
 import ErrorPage from './pages/ErrorPage.jsx';
 import LoadingPage from './pages/LoadingPage.jsx';
 import PatientPage from './pages/PatientPage.jsx';
+import MLPredictionPage from './pages/MLPredictionPage.jsx';
+
 
 const App = lazy(() => import('./App.jsx'));
 
@@ -18,7 +20,13 @@ const router = createBrowserRouter([
     path: '/patients',
     element: <PatientPage />,
     errorElement: <ErrorPage />,
+  },
+  {
+    path: '/ml_models',
+    element: <MLPredictionPage />,
+    errorElement: <ErrorPage />,
   }
+
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
