@@ -1,13 +1,15 @@
 import axios from 'axios';
 
 
-const axiosMLReq = axios.create({
-    baseURL: 'https://acbb-87-255-216-107.ngrok-free.app',
-});
 
-export const handleMLs = async (data) => {
+
+export const handleEcg = async (file) => {
+    const axiosMLReq = axios.create({
+        baseURL: 'https://b27e-87-255-216-107.ngrok-free.app',
+    });
+
     try {
-        const response = await axiosMLReq.post("/upload", data);
+        const response = await axiosMLReq.post("/predict", file);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

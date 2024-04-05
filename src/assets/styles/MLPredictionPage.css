@@ -1,14 +1,12 @@
 .ml_page_container {
     display: flex;
-    justify-content: space-between;
-    margin: 0 5%;
+    justify-content: center;
+    margin: auto;
 }
 
 .card_container{
+    justify-content: center;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 0 5%;
 }
 
 .selector_container{
@@ -26,4 +24,19 @@
     color: black;
     background-color:blanchedalmond;
     margin: 0 5%;
+}
+
+.form_container{
+    display: flex;
+    justify-content: end;
+    width: auto;
+    align-items: end;
+    margin: auto;
+}
+
+models_container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: auto;
 }
