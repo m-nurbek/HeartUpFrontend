@@ -1,4 +1,4 @@
-import { Table, Button } from "antd";
+import { Table } from "antd";
 import { getAllPatients } from "../api/handlePatients";
 import { useEffect, useState } from "react";
 

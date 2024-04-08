@@ -1,15 +1,13 @@
 import axios from 'axios';
 
 
+const axiosMLReq = axios.create({
+    baseURL: 'https://hawk-model-dingo.ngrok-free.app',
+});
 
-
-export const handleEcg = async (file) => {
-    const axiosMLReq = axios.create({
-        baseURL: 'https://b27e-87-255-216-107.ngrok-free.app',
-    });
-
+export const handleMLs = async (data) => {
     try {
-        const response = await axiosMLReq.post("/predict", file);
+        const response = await axiosMLReq.post("/predict_audio", data);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
