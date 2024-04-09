@@ -45,25 +45,32 @@ const PredictionPage = () => {
 
   const handleSubmit = async () => {
     try {
-      if (audioFile) {
-        const audioFormData = new FormData();
-        audioFormData.append('file', audioFile);
-        const audioResponse = await axios.post('https://hawk-model-dingo.ngrok-free.app/predict_audio', audioFormData);
-        setAudioOutput(JSON.stringify(audioResponse.data));
-      }
-
-      if (jsonFormData) {
-        const jsonFormDataAsJSON = JSON.stringify(jsonFormData);
-        const jsonResponse = await axios.post('https://d108-178-91-253-107.ngrok-free.app/predict', jsonFormData);
-        setJsonOutput(JSON.stringify(jsonResponse.data));
-      }
-
       if (matFile) {
         const matFormData = new FormData();
         matFormData.append('files', matFile);
         const matResponse = await axios.post('https://fddb-178-91-253-107.ngrok-free.app/upload', matFormData);
-        setMatOutput(JSON.stringify(matResponse.data));
+        const class_val = matResponse.data.class;
+        const probability = matResponse.data.probability;
+        const output_val = class_val + ' with probability: ' + probability;
+        setMatOutput(JSON.stringify(output_val));
       }
+      
+      if (audioFile) {
+        const audioFormData = new FormData();
+        audioFormData.append('file', audioFile);
+        const audioResponse = await axios.post('https://hawk-model-dingo.ngrok-free.app/predict_audio', audioFormData);
+        const prediction = audioResponse.data.prediction;
+        setAudioOutput(JSON.stringify(prediction));
+      }
+      
+      if (jsonFormData) {
+
+        const jsonResponse = await axios.post('https://d108-178-91-253-107.ngrok-free.app/predict', jsonFormData);
+        const prediction = jsonResponse.data.prediction;
+        setJsonOutput(JSON.stringify(prediction));
+      }
+
+    
     } catch (error) {
       console.error('Error submitting data:', error);
     }
