@@ -6,9 +6,9 @@ const PredictionPage = () => {
   const [audioFile, setAudioFile] = useState(null);
   const [jsonFile, setJsonFile] = useState(null);
   const [matFile, setMatFile] = useState(null);
-  const [audioOutput, setAudioOutput] = useState('Waiting for output');
-  const [jsonOutput, setJsonOutput] = useState('Waiting for output');
-  const [matOutput, setMatOutput] = useState('Waiting for output');
+  const [audioOutput, setAudioOutput] = useState('Waiting for output...');
+  const [jsonOutput, setJsonOutput] = useState('Waiting for output...');
+  const [matOutput, setMatOutput] = useState('Waiting for output...');
 
   const [jsonFormData, setJsonFormData] = useState({
     survival: '',
@@ -106,82 +106,91 @@ const PredictionPage = () => {
   };
 
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
       <h1>Model Prediction Page</h1>
 
-      <div style={{ border: '3px solid #0080FF', color: 'black', borderRadius: '10px', boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.3)' }} />
-      
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px' }}>
-        <div style={{ width: '50%' }}>
-          <h2>Heart Beat Model</h2>
+      <div style={{height: '50px'}}></div>
+
+      <div style={{ border: '3px solid #0080FF', color: 'black', borderRadius: '10px', width: '100%',boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.3)' }} />
+
+      <div style={{height: '100px'}}></div>
+      {/* Heart Beat Model */}
+      <div style={{ width: '50%', marginBottom: '20px', border: '4px solid #ccc', borderRadius: '10px', padding: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
+          <h2 style={{ marginRight: '20px', textAlign: 'left', transform: 'translateX(-60px)', fontSize: '36px'}}>Heart Beat Model</h2>
           <div
             onDrop={handleAudioDrop}
             onDragOver={handleDragOver}
-            style={{ border: '2px dashed #ccc', padding: '20px', width: '100%', marginBottom: '10px' }}
+            style={{ border: '2px dashed #ccc', padding: '20px', marginRight: '75px', width: '40%', marginBottom: '10px', textAlign: 'center' }}
           >
             <h3>Drag and drop audio file here</h3>
             {audioFile && <p>{audioFile.name}</p>}
           </div>
-          <p>{audioOutput}</p>
-          <Button onClick={handleClearAudio} style={{ marginBottom: '10px' }}>Clear submitted file</Button>
-        </div>
+          <p style={{ textAlign: 'right', transform: 'translateX(50px)', fontSize: '20px'}}>{audioOutput}</p>
       </div>
+      <Button onClick={handleClearAudio} style={{ marginBottom: '10px', marginLeft: 'auto', scale: '1.5' }}>Clear submitted file</Button>
+    </div>
 
-      <div style={{ border: '3px solid #A0A0A0', width: '650px', justifyContent: 'center', margin: 'auto', color: 'black', borderRadius: '10px', boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.3)' }} />
-      
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px' }}>
-        <div style={{ width: '50%' }}>
-          <h2>UCL Model</h2>
-          <Form layout="vertical">
-            <Form.Item label="Survival">
+      {/* Divider */}
+      <hr style={{ width: '50%', marginBottom: '25px'}} />
+
+      {/* UCL Model */}
+      <div style={{ width: '50%', marginBottom: '20px', border: '4px solid #ccc', borderRadius: '10px', padding: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', justifyContent: 'center'}}>
+          <h2 style={{ marginRight: '20px', textAlign: 'left', marginLeft: '60px', transform: 'translateX(-250px)', fontSize: '36px'}}>UCL Model</h2>
+          <Form layout="vertical" style={{ width: '20%', marginRight: '20px'}}>
+            {/* Form fields */}
+            <Form.Item label="Survival" style={{scale: '1.2'}}>
               <Input value={jsonFormData.survival} onChange={e => handleJsonFieldChange('survival', e.target.value)} />
             </Form.Item>
-            <Form.Item label="Age">
+            <Form.Item label="Age" style={{scale: '1.2'}}>
               <Input value={jsonFormData.age} onChange={e => handleJsonFieldChange('age', e.target.value)} />
             </Form.Item>
-            <Form.Item label="Pericardial Effusion">
+            <Form.Item label="Pericardial Effusion" style={{scale: '1.2'}}>
               <Input value={jsonFormData.pericardialeffusion} onChange={e => handleJsonFieldChange('pericardialeffusion', e.target.value)} />
             </Form.Item>
-            <Form.Item label="Fractional Shortening">
+            <Form.Item label="Fractional Shortening" style={{scale: '1.2'}}>
               <Input value={jsonFormData.fractionalshortening} onChange={e => handleJsonFieldChange('fractionalshortening', e.target.value)} />
             </Form.Item>
-            <Form.Item label="EPSS">
+            <Form.Item label="EPSS" style={{scale: '1.2'}}>
               <Input value={jsonFormData.epss} onChange={e => handleJsonFieldChange('epss', e.target.value)} />
             </Form.Item>
-            <Form.Item label="LVDD">
+            <Form.Item label="LVDD" style={{scale: '1.2'}}>
               <Input value={jsonFormData.lvdd} onChange={e => handleJsonFieldChange('lvdd', e.target.value)} />
             </Form.Item>
-            <Form.Item label="Wall Motion Score">
+            <Form.Item label="Wall Motion Score" style={{scale: '1.2'}}>
               <Input value={jsonFormData.wallmotion_score} onChange={e => handleJsonFieldChange('wallmotion_score', e.target.value)} />
             </Form.Item>
-            <Form.Item label="Wall Motion Index">
+            <Form.Item label="Wall Motion Index" style={{scale: '1.2'}}>
               <Input value={jsonFormData.wallmotion_index} onChange={e => handleJsonFieldChange('wallmotion_index', e.target.value)} />
             </Form.Item>
-            <Form.Item label="Mult">
+            <Form.Item label="Mult" style={{scale: '1.2'}}>
               <Input value={jsonFormData.mult} onChange={e => handleJsonFieldChange('mult', e.target.value)} />
             </Form.Item>
-          </Form>
-          <p>{jsonOutput}</p>
-          <Button onClick={handleClearJson} style={{ marginBottom: '10px' }}>Clear submitted file</Button>
+            </Form>
+          <p style={{ textAlign: 'right', transform: 'translateX(220px)', fontSize: '20px'}}>{jsonOutput}</p>
         </div>
+        <Button onClick={handleClearJson} style={{ marginBottom: '10px', scale: '1.5'}}>Clear submitted file</Button>
       </div>
 
-      <div style={{ border: '3px solid #A0A0A0', width: '650px', justifyContent: 'center', margin: 'auto', color: 'black', borderRadius: '10px', boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.3)' }} />
+      {/* Divider */}
+      <hr style={{ width: '50%', marginBottom: '25px'}} />
 
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px' }}>
-        <div style={{ width: '50%' }}>
-          <h2>ECG Model</h2>
+      {/* ECG Model */}
+      <div style={{ width: '50%', marginBottom: '20px', border: '4px solid #ccc', borderRadius: '10px', padding: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
+          <h2 style={{ marginRight: '20px', textAlign: 'left', transform: 'translateX(-80px)', fontSize: '36px'}}>ECG Model</h2>
           <div
-            onDrop={handleMatDrop}
+            onDrop={handleAudioDrop}
             onDragOver={handleDragOver}
-            style={{ border: '2px dashed #ccc', padding: '20px', width: '100%', marginBottom: '10px' }}
+            style={{ border: '2px dashed #ccc', padding: '20px', width: '40%', marginBottom: '10px', textAlign: 'center' }}
           >
-            <h3>Drag and drop .mat file here</h3>
-            {matFile && <p>{matFile.name}</p>}
+            <h3>Drag and drop audio file here</h3>
+            {audioFile && <p>{audioFile.name}</p>}
           </div>
-          <p>{matOutput}</p>
-          <Button onClick={handleClearMat} style={{ marginBottom: '10px' }}>Clear submitted file</Button>
+          <p style={{ textAlign: 'right', transform: 'translateX(90px)', fontSize: '20px'}}>{matOutput}</p>
         </div>
+        <Button onClick={handleClearMat} style={{ marginBottom: '10px', marginLeft: 'auto', scale: '1.5'}}>Clear submitted file</Button>
       </div>
 
       <Button onClick={handleSubmit} type="primary" style={{ width: '200px', scale: '1.5', marginTop: '50px', marginBottom: '50px' }} block>
