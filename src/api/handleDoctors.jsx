@@ -1,10 +1,10 @@
-import { PATIENTS } from "./constants/apiEndpoints";
 import axiosRequest from "./axiosConfig";
+import { DOCTORS } from "./constants/apiEndpoints";
 
 
-export async function getAllPatients() {
+export async function getAllDoctors() {
     try {
-        let response = await axiosRequest.get(PATIENTS, {
+        let response = await axiosRequest.get(DOCTORS, {
             body: {}
         });
         return response.data;
@@ -13,9 +13,9 @@ export async function getAllPatients() {
     }
 }
 
-export async function retrievePatient(id) {
+export async function retrieveDoctor(id) {
     try {
-        let response = await axiosRequest.get(PATIENTS + `/${id}`, {
+        let response = await axiosRequest.get(DOCTORS + `/${id}`, {
             body: {}
         });
         return response.data;
@@ -23,4 +23,3 @@ export async function retrievePatient(id) {
         console.log(error.response);
     }
 }
-

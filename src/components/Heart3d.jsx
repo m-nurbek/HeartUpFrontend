@@ -7,7 +7,7 @@ export default function Heart3d() {
     return (
         <>
             <Suspense fallback={<div>Loading...</div>}>
-                <Spline scene="https://prod.spline.design/uXez4XUxuI5Q5P6U/scene.splinecode" />
+                <Spline scene="https://prod.spline.design/XVOjsUC9RPhQ8m8e/scene.splinecode" />
             </Suspense>
         </>
     );

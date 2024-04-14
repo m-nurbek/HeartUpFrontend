@@ -6,6 +6,7 @@ import ErrorPage from './pages/ErrorPage.jsx';
 import LoadingPage from './pages/LoadingPage.jsx';
 import PatientPage from './pages/PatientPage.jsx';
 import AllPatientsPage from './pages/AllPatientsPage.jsx';
+import ModelsPage from './pages/ModelsPage.jsx';
 
 const App = lazy(() => import('./App.jsx'));
 
@@ -18,12 +19,17 @@ const router = createBrowserRouter([
   {
     path: '/patients',
     element: <AllPatientsPage />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />
   },
   {
     path: '/patients/:patientId',
     element: <PatientPage />,
     errorElement: <ErrorPage />,
+  },
+  {
+    path: '/models',
+    element: <ModelsPage />,
+    errorElement: <ErrorPage />
   }
 ]);
 

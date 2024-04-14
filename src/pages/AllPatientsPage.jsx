@@ -1,6 +1,7 @@
-import { Table, Button } from "antd";
+import { Table } from "antd";
 import { getAllPatients } from "../api/handlePatients";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const columns = [
     {
@@ -52,6 +53,7 @@ const columns = [
 
 export default function AllPatientsPage() {
     const [dataSource, setDataSource] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -82,7 +84,17 @@ export default function AllPatientsPage() {
 
     return (
         <>
-            <Table dataSource={dataSource} columns={columns} />
+            <Table
+                dataSource={dataSource}
+                columns={columns}
+                onRow={(record) => {
+                    return {
+                        onClick: () => {
+                            navigate(`${record.key}`);
+                        }
+                    }
+                }}
+            />
         </>
     );
 }
