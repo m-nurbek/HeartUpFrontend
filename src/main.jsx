@@ -11,6 +11,8 @@ import PredictionPage from './pages/PredictionPage.jsx';
 
 import AllPatientsPage from './pages/AllPatientsPage.jsx';
 import ModelsPage from './pages/ModelsPage.jsx';
+import NewModelPage from './pages/NewModelPage.jsx';
+
 
 
 const App = lazy(() => import('./App.jsx'));
@@ -33,7 +35,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/model_page',
-    element: <PredictionPage />,
+    element: <NewModelPage />,
     errorElement: <ErrorPage />,
   },
 

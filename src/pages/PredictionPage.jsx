@@ -48,7 +48,7 @@ const PredictionPage = () => {
       if (matFile) {
         const matFormData = new FormData();
         matFormData.append('files', matFile);
-        const matResponse = await axios.post('https://fddb-178-91-253-107.ngrok-free.app/upload', matFormData);
+        const matResponse = await axios.post('https://3709-178-91-253-107.ngrok-free.app/upload', matFormData);
         const class_val = matResponse.data.class;
         const probability = matResponse.data.probability;
         const output_val = class_val + ' with probability: ' + probability;
@@ -65,7 +65,7 @@ const PredictionPage = () => {
       
       if (jsonFormData) {
 
-        const jsonResponse = await axios.post('https://d108-178-91-253-107.ngrok-free.app/predict', jsonFormData);
+        const jsonResponse = await axios.post('https://a0c9-178-91-253-107.ngrok-free.app/predict', jsonFormData);
         const prediction = jsonResponse.data.prediction;
         setJsonOutput(JSON.stringify(prediction));
       }
@@ -181,12 +181,12 @@ const PredictionPage = () => {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
           <h2 style={{ marginRight: '20px', textAlign: 'left', transform: 'translateX(-80px)', fontSize: '36px'}}>ECG Model</h2>
           <div
-            onDrop={handleAudioDrop}
+            onDrop={handleMatDrop}
             onDragOver={handleDragOver}
             style={{ border: '2px dashed #ccc', padding: '20px', width: '40%', marginBottom: '10px', textAlign: 'center' }}
           >
             <h3>Drag and drop audio file here</h3>
-            {audioFile && <p>{audioFile.name}</p>}
+            {matFile && <p>{matFile.name}</p>}
           </div>
           <p style={{ textAlign: 'right', transform: 'translateX(90px)', fontSize: '20px'}}>{matOutput}</p>
         </div>
