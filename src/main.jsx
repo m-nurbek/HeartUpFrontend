@@ -4,9 +4,14 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.scss';
 import ErrorPage from './pages/ErrorPage.jsx';
 import LoadingPage from './pages/LoadingPage.jsx';
+
 import PatientPage from './pages/PatientPage.jsx';
+
+import PredictionPage from './pages/PredictionPage.jsx';
+
 import AllPatientsPage from './pages/AllPatientsPage.jsx';
 import ModelsPage from './pages/ModelsPage.jsx';
+
 
 const App = lazy(() => import('./App.jsx'));
 
@@ -27,10 +32,11 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: '/models',
-    element: <ModelsPage />,
-    errorElement: <ErrorPage />
-  }
+    path: '/model_page',
+    element: <PredictionPage />,
+    errorElement: <ErrorPage />,
+  },
+
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

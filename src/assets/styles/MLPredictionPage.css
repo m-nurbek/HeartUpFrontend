@@ -1,0 +1,42 @@
+.ml_page_container {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+
+.card_container{
+    justify-content: center;
+    display: flex;
+}
+
+.selector_container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    margin: 0 5%;
+}
+
+.dropdown_container{
+    display: flex;
+    flex-wrap: wrap;
+    width: fit-content;
+    justify-content: space-between;
+    color: black;
+    background-color:blanchedalmond;
+    margin: 0 5%;
+}
+
+.form_container{
+    display: flex;
+    justify-content: end;
+    width: auto;
+    align-items: end;
+    margin: auto;
+}
+
+models_container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: auto;
+}
