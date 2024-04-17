@@ -1,4 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@use './styles/patient_page.scss';
+@use './styles/models_page.scss';
+@use './styles/navbar_component.scss';
+@use './styles/sidemenu.scss';
+@use './styles/doctor_page.scss';
+@use './styles/allpatients_page.scss';
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
 
 *,
 ::before,
@@ -6,82 +14,25 @@
     box-sizing: border-box;
 }
 
+:root {
+    // Colors
+    --black: #000000;
+    --white: #ffffff;
+    --color1: #004aad;
+    --color2: #040606;
+    --color3: #0c0d17;
+    --color4: #231815;
+    --color5: #24145c;
+    --color6: #545454; 
+    --color7: #5e17eb; 
+    --color8: #bb2e2e;
+    --color9: #ff5757;
+}
+
 body {
-    font-family: "Montserrat", sans-serif;
+    font-family: "Open Sans", sans-serif;
+    font-size: large;
+    
+    font-weight: 400;
     overflow-x: hidden;
-}
-
-.main-container {
-    position: absolute;
-    display: grid;
-    place-items: center;
-
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    z-index: -1;
-
-
-    &__text {
-        display: flex;
-        flex-direction: column;
-
-        h1 {
-            display: flex;
-
-            img {
-                width: 0.8em;
-                display: inline-block;
-            }
-
-            text-transform: uppercase;
-            color: #25125b44;
-            font-size: 15rem;
-            letter-spacing: -16px;
-            grid-column: 0 / 3;
-            margin: 0 0 -50px 0;
-        }
-
-        .slogan {
-            display: flex;
-            justify-content: space-between;
-            width: 80%;
-            margin: 0 auto;
-
-            &>* {
-                font-size: 2em;
-                text-transform: lowercase;
-                font-weight: bold;
-                color: #25125b44;
-            }
-        }
-
-    }
-
-
-}
-
-.heart-3d {
-    width: fit-content;
-}
-
-nav {
-    position: fixed;
-    width: 100vw;
-    display: block;
-    padding: 1em;
-
-    ul {
-        padding: 0;
-        width: 100%;
-        list-style: none;
-        margin: 0;
-        display: flex;
-        gap: 2em;
-        justify-content: space-around;
-        color: rgb(131, 131, 131);
-        font-size: 1.2em;
-        text-transform: lowercase;
-    }
 }

@@ -1,7 +1,9 @@
-import { Table } from "antd";
+import { Spin, Table } from "antd";
 import { getAllPatients } from "../api/handlePatients";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import SideMenu from "../components/SideMenu";
 
 const columns = [
     {
@@ -54,9 +56,11 @@ const columns = [
 export default function AllPatientsPage() {
     const [dataSource, setDataSource] = useState([]);
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true);
             try {
                 const response = await getAllPatients();
                 const formattedData = response.map(item => ({
@@ -71,11 +75,12 @@ export default function AllPatientsPage() {
                     height: item.height,
                     weight: item.weight
                 }));
-                console.log("RESPONSE", formattedData);
 
                 setDataSource(formattedData);
             } catch (error) {
                 console.error(error);
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -84,17 +89,27 @@ export default function AllPatientsPage() {
 
     return (
         <>
-            <Table
-                dataSource={dataSource}
-                columns={columns}
-                onRow={(record) => {
-                    return {
-                        onClick: () => {
-                            navigate(`${record.key}`);
-                        }
-                    }
-                }}
-            />
+            {isLoading && <Spin fullscreen />}
+            <Navbar />
+
+            <div className="allpatients_page">
+                <SideMenu activeItem="patients" />
+                <div className="allpatients_page__info">
+                    <h2>Patients</h2>
+                    <Table
+                        dataSource={dataSource}
+                        columns={columns}
+                        onRow={(record) => {
+                            return {
+                                onClick: () => {
+                                    navigate(`${record.key}`);
+                                }
+                            }
+                        }}
+                        bordered
+                    />
+                </div>
+            </div>
         </>
     );
 }

@@ -1,78 +1,71 @@
-import { Col, Avatar, Row, Descriptions, Button, Divider, Typography} from 'antd';
+import { Avatar, Button, Descriptions, Table } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { retrievePatient } from '../api/handlePatients';
 import { useEffect, useState } from 'react';
+import { retrievePatientDiagnosisHistory } from '../api/handleMLs';
+import { DiagnosisColumns, TransformToDiagnosisDataSource } from '../shared/PatientDiagnosisHistoryColumns';
+import LoadingPage from './LoadingPage';
+import Navbar from '../components/Navbar';
+import SideMenu from '../components/SideMenu';
+
 
 export default function PatientPage() {
     const [patient, setPatient] = useState(null);
+    const [ml_history, setMlHistory] = useState(null);
     const { patientId } = useParams();
-    const { Text, Title} = Typography;
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
             const response = await retrievePatient(patientId);
+            const ml_history_response = await retrievePatientDiagnosisHistory(patientId);
+            let transformed_diagnosis_data = ml_history_response.map(TransformToDiagnosisDataSource);
             setPatient(response);
+            setMlHistory(transformed_diagnosis_data);
         };
 
         fetchData();
     }, [patientId]);
 
     return (
-        <div style={{margin:'40px', widht: '100%'}}>
-            <Row justify="center" style={{marginBottom: '5em', justifyContent: 'left'}}>
-                <Col>
-                    {patient && (
-                        <Avatar shape="square" size={180} icon={<UserOutlined />}  src={patient.profilePicture} />
-                    )}
-                </Col>
-                <Col style={{marginLeft: '2em', display: 'flex', flexDirection: 'column', alignItems: 'start'}}>
-                    <Title style={{color: '#1269CB'}} level={2}>Jessica Alba</Title>
-                    <Row justify="space-between" style={{ width: '100%'}}>
-                        <Col><Text style={{fontSize: '20px'}}>15.01.2001</Text></Col>
-                        <Col><Text style={{fontSize: '20px', marginRight: '6px', marginLeft: '6px'}}>|</Text></Col>
-                        <Col><Text style={{fontSize: '20px'}}>203029424</Text></Col>
-                    </Row>
-                    <Row>
-                        <Text style={{fontSize: '20px'}}>Almaty st 32, apt. 99</Text>
-                    </Row>
-                        <Button size="large" onClick={() => { }}>
-                            Change Picture
+        patient ?
+            <>
+                <Navbar />
+                <div className='patient_page'>
+                    <SideMenu />
+                    <main>
+                        <div className='patient_page__info'>
+                            <Avatar size={240} className='patient_page__info__avatar' shape='square' icon={<UserOutlined />} />
+                            <div className="patient_page__info__description">
+                                <div>
+                                    <h1>{patient.first_name + ' ' + patient.last_name}</h1>
+                                    <p>{patient.email}</p>
+                                    <p><span>State ID:</span> {patient.state_id}</p>
+                                    <p><span>Date Of Birth:</span> {patient.dob}</p>
+                                    <p><span>Sex:</span> {patient.sex}</p>
+                                </div>
+                                <div className='superviser'>
+                                    <p className='superviser__info'>Supervised by<br /><span>Doctor Name</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <Button type='primary' style={{
+                            margin: '1em',
+                            padding: '0.5em 1em 2em',
+                            textAlign: 'center',
+                            fontSize: '1.1rem'
+                        }}
+                            onClick={() => navigate(`/models/${patientId}`)}
+                        >
+                            New Diagnosis
                         </Button>
-                </Col>
-                <Row style={{marginTop: '-10em', marginLeft: '85em', display: 'flex', flexDirection: 'column', alignItems: 'end'}}>
-                    <Col style={{justifyContent: 'right', alignItems: 'right', margin: 'auto'}}>
-                        <Col><Title level={3}>Supervised by:</Title></Col>
-                        <Col><Title level={2} style={{color: '#1269CB'}}>Dr. James Harden</Title></Col>
-                    </Col>
-                </Row>
-            </Row>
-            
-                
-            
+                        <Table layout="vertical" dataSource={ml_history} columns={DiagnosisColumns} bordered />
+                    </main>
+                </div >
+            </>
 
-            {patient && (
-                <div style={{margin: '0px'}}>
-                    <Descriptions 
-                        bordered column={10}
-                        layout="vertical"
-                        labelStyle={{ fontSize: '18px', fontWeight: 'bold'}}
-                        contentStyle={{ fontSize: '18px'}}
-                    >
-                        <Descriptions.Item style={{textAlign: 'center'}} label="Date"></Descriptions.Item>
-                        <Descriptions.Item style={{textAlign: 'center'}} label="Doctor"></Descriptions.Item>
-                        <Descriptions.Item style={{textAlign: 'center'}} label="UCL"></Descriptions.Item>
-                        <Descriptions.Item style={{textAlign: 'center'}} label="ECG"></Descriptions.Item>
-                        <Descriptions.Item style={{textAlign: 'center'}} label="Heartbeat"></Descriptions.Item>
-                        <Descriptions.Item style={{textAlign: 'center'}} label="Echonet"></Descriptions.Item>
-
-                    </Descriptions>
-             
-                    
-                </div>
-                
-            )}
-
-        </div>
+            : <LoadingPage />
     );
 }

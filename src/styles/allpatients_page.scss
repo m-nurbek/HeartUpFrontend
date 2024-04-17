@@ -1,0 +1,15 @@
+
+.allpatients_page {
+    display: flex;
+    gap: 4em;
+    margin-top: 2em;
+
+    &__info .ant-table {
+        font-size: 1.1rem;
+    }
+
+    &__info > h2 {
+        margin: 0;
+        margin-bottom: 1em;
+    }
+}
