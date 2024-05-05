@@ -28,6 +28,7 @@ const diagnosisTable = [
 export default function ModelsPage() {
     const [ecgFile, setEcgFile] = useState(null);
     const [heartBeatAudioFile, setHeartBeatAudioFile] = useState(null);
+    const [echoNetFile, setEchoNetFile] = useState(null);
     const [uclData, setUclData] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [diagnosisData, setDiagnosisData] = useState([]);
@@ -35,13 +36,13 @@ export default function ModelsPage() {
 
     const handleSubmitButton = async () => {
         setIsLoading(true);
-        if (!heartBeatAudioFile || !ecgFile || !uclData) {
+        if (!heartBeatAudioFile || !ecgFile || !uclData || !echoNetFile) {
             message.error("Please fill in all the required fields and upload all the necessary files.");
             setIsLoading(false);
             return;
         }
 
-        const response = await postMLDiagnosis(patientId, uclData, ecgFile, heartBeatAudioFile)
+        const response = await postMLDiagnosis(patientId, uclData, ecgFile, echoNetFile, heartBeatAudioFile)
         console.log(response);
         setIsLoading(false);
         if (response == 'undefined') {
@@ -67,6 +68,12 @@ export default function ModelsPage() {
                 prediction: response.heart_beat_prediction,
                 date: new Date(response.heart_beat_prediction_on).toLocaleDateString(),
             },
+            {
+                key: '4',
+                model: 'Echo Net',
+                prediction: response.echo_net_prediction,
+                date: new Date(response.echo_net_prediction_on).toLocaleDateString(),
+            }
         ]);
     }
 
@@ -209,6 +216,49 @@ export default function ModelsPage() {
                     </Dragger>
                 </div>
             </div>
+
+            <Divider><h2> Echo Net Model </h2></Divider>
+
+            <div className="models_page__model">
+                <div className="models_page__model__form">
+                    <Dragger style={{
+                        width: '400px'
+                    }} height={400}
+                        beforeUpload={(file) => {
+                            setEchoNetFile(file);
+                            return false;
+                        }}
+                        {...uploadProps}
+                        onRemove={() => {
+                            setEchoNetFile(null);
+                        }}
+                    >
+                        <p className="ant-upload-drag-icon">
+                            <InboxOutlined />
+                        </p>
+                        <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                        <p className="ant-upload-hint">
+                            Support for a single upload. Strictly prohibited from uploading company data or other
+                            banned files.
+                        </p>
+                    </Dragger>
+                </div>
+                <div className="models_page__model__about">
+                    <h3>About the model</h3>
+                    <p>
+                        Echonet was trained on 10030 samples of echocardiography videos
+                        obtained from the Stanford University Hospital between 2016 and 2018.
+                        Its inputs are preprocessed black-white echocardiography videos of 112 by 112 pixels resolution.
+                    </p>
+                    <img src="/TempImage.png" alt="" />
+                    <h3>Instructions</h3>
+                    <p>
+                        Please provide the heart sound data in the format of AVI file by clicking on the “Upload” icon
+                        After the submission of the audio file, please press the “Submit” button to get the prediction
+                    </p>
+                </div>
+            </div>
+
             <Button onClick={handleSubmitButton} className="submit_button" type="primary">
                 Submit
             </Button>

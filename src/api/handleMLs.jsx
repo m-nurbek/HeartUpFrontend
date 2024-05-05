@@ -38,7 +38,7 @@ export const retrievePatientDiagnosisHistory = async (patient_id) => {
 // 'ecg.ecg_file': [<InMemoryUploadedFile: [object Object](application / octet - stream) >], 
 
 
-export const postMLDiagnosis = async (patient_id, ucl, ecg_file, heart_beat_audio) => {
+export const postMLDiagnosis = async (patient_id, ucl, ecg_file, echo_net_file, heart_beat_audio) => {
     try {
         let data = new FormData();
         data.append('patient', patient_id);
@@ -53,6 +53,9 @@ export const postMLDiagnosis = async (patient_id, ucl, ecg_file, heart_beat_audi
         data.append('ucl.mult', ucl.mult);
         data.append('heart_beat.heart_beat_audio', heart_beat_audio, heart_beat_audio.name);
         data.append('ecg.ecg_file', ecg_file, ecg_file.name);
+        data.append('echo_net.echo_net_file', echo_net_file, echo_net_file.name);
+
+        console.log("RESPONSE " +  patient_id)
 
         const response = await axiosRequest.post(ML_DIAGNOSIS,
             data,

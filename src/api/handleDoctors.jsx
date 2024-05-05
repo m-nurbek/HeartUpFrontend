@@ -15,7 +15,7 @@ export async function getAllDoctors() {
 
 export async function retrieveDoctor(id) {
     try {
-        let response = await axiosRequest.get(DOCTORS + `/${id}`, {
+        let response = await axiosRequest.get(DOCTORS + `${id}`, {
             body: {}
         });
         return response.data;

@@ -8,6 +8,7 @@ import { DiagnosisColumns, TransformToDiagnosisDataSource } from '../shared/Pati
 import LoadingPage from './LoadingPage';
 import Navbar from '../components/Navbar';
 import SideMenu from '../components/SideMenu';
+import LayoutComponent from "../components/Layout.jsx";
 
 
 export default function PatientPage() {
@@ -19,6 +20,7 @@ export default function PatientPage() {
     useEffect(() => {
         const fetchData = async () => {
             const response = await retrievePatient(patientId);
+            console.log("ALL PATIENTS:", response);
             const ml_history_response = await retrievePatientDiagnosisHistory(patientId);
             let transformed_diagnosis_data = ml_history_response.map(TransformToDiagnosisDataSource);
             setPatient(response);
@@ -31,12 +33,15 @@ export default function PatientPage() {
     return (
         patient ?
             <>
-                <Navbar />
-                <div className='patient_page'>
-                    <SideMenu />
+                <LayoutComponent>
                     <main>
                         <div className='patient_page__info'>
-                            <Avatar size={240} className='patient_page__info__avatar' shape='square' icon={<UserOutlined />} />
+                            <Avatar size={240} className='patient_page__info__avatar' shape='square' icon={<UserOutlined />}
+                                src={patient.photo && patient.photo}
+                                style={{
+                                    border: '1px solid var(--color6)'
+                                }}
+                            />
                             <div className="patient_page__info__description">
                                 <div>
                                     <h1>{patient.first_name + ' ' + patient.last_name}</h1>
@@ -63,7 +68,7 @@ export default function PatientPage() {
                         </Button>
                         <Table layout="vertical" dataSource={ml_history} columns={DiagnosisColumns} bordered />
                     </main>
-                </div >
+                </LayoutComponent>
             </>
 
             : <LoadingPage />

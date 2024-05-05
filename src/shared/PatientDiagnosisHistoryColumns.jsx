@@ -21,6 +21,11 @@ export const DiagnosisColumns = [
         dataIndex: 'ucl_prediction',
         key: 'ucl_prediction',
     },
+    {
+        title: 'EchoNet',
+        dataIndex: 'echo_net_prediction',
+        key: 'echo_net_prediction',
+    },
 ];
 
 export const TransformToDiagnosisDataSource = (item, index) => ({
@@ -29,6 +34,7 @@ export const TransformToDiagnosisDataSource = (item, index) => ({
     ecg_prediction: item.ecg_prediction,
     heart_beat_prediction: item.heart_beat_prediction,
     ucl_prediction: item.ucl_prediction,
+    echo_net_prediction: item.echo_net_prediction,
 });
 
 // ecg:

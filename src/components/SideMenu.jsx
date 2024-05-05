@@ -7,7 +7,7 @@ export default function SideMenu({ activeItem = "myprofile" }) {
         <>
             <ul className="sidemenu">
                 <li className={`sidemenu__item ${activeItem === "myprofile" ? "sidemenu__item--focused" : ""}`} name="myprofile">
-                    <Link to="/doctor">My Profile</Link>
+                    <Link to="/doctors">My Profile</Link>
                 </li>
                 <li className={`sidemenu__item ${activeItem === "schedule" ? "sidemenu__item--focused" : ""}`} name="schedule">
                     <Link>Schedule</Link>

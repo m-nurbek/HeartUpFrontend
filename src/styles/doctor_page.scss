@@ -8,22 +8,31 @@
     &__info {
         min-width: 500px;
         max-width: 1000px;
+
+        &>section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1em;
+        }
     }
 
     &__info__brief {
-        width: fit-content;
         display: flex;
         gap: 1em;    
-        align-items: center;   
+        align-items: end;  
+        justify-content: space-between;
 
         & > div > * {
             margin: 0;
         }
 
         & > div > h1 {
-            font-size: 2.5em;
+            font-size: 3em;
             color: var(--color1);
         }
 
+        &__workinghours > h2 {
+            color: var(--color1);
+        }
     }
 }

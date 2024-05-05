@@ -1,9 +1,10 @@
-import { Spin, Table } from "antd";
-import { getAllPatients } from "../api/handlePatients";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {Spin, Table} from "antd";
+import {getAllPatients} from "../api/handlePatients";
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import Navbar from "../components/Navbar";
 import SideMenu from "../components/SideMenu";
+import LayoutComponent from "../components/Layout.jsx";
 
 const columns = [
     {
@@ -89,11 +90,8 @@ export default function AllPatientsPage() {
 
     return (
         <>
-            {isLoading && <Spin fullscreen />}
-            <Navbar />
-
-            <div className="allpatients_page">
-                <SideMenu activeItem="patients" />
+            {isLoading && <Spin fullscreen/>}
+            <LayoutComponent>
                 <div className="allpatients_page__info">
                     <h2>Patients</h2>
                     <Table
@@ -109,7 +107,7 @@ export default function AllPatientsPage() {
                         bordered
                     />
                 </div>
-            </div>
+            </LayoutComponent>
         </>
     );
 }
