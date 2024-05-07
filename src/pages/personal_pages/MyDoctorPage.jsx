@@ -1,20 +1,12 @@
-import {
-    Button,
-    Card,
-    Typography,
-    Divider,
-    Flex,
-    Tabs,
-    Descriptions,
-    Image
-} from "antd";
-import {retrieveDoctor} from "../api/handleDoctors";
+import LayoutComponent from "../../components/Layout.jsx";
 import {useEffect, useState} from "react";
+import {getPersonalDoctorInfo} from "../../api/handleDoctors.jsx";
+import {Button, Card, Descriptions, Divider, Flex, Image, Tabs, Typography} from "antd";
+import LoadingPage from "../LoadingPage.jsx";
+import getSpecializationTitle from "../../api/constants/specializations.js";
 import {useParams} from "react-router-dom";
-import LoadingPage from "./LoadingPage";
-import LayoutComponent from "../components/Layout.jsx";
-import getSpecializationTitle from "../api/constants/specializations.js";
-import {getMyUserInfo} from "../api/handleAuthentication.jsx";
+import {getMyUserInfo} from "../../api/handleAuthentication.jsx";
+import {ChangePersonalInfoModal} from "../../components/ChangePersonalInfoModal.jsx";
 
 
 const cardStyle = {
@@ -27,7 +19,7 @@ const imgStyle = {
     objectFit: 'cover',
 };
 
-export default function DoctorPage() {
+export default function MyDoctorPage() {
     const [doctor, setDoctor] = useState(null);
     const {doctorId} = useParams();
     const [user, setUser] = useState(null);
@@ -36,8 +28,8 @@ export default function DoctorPage() {
         const fetchData = async () => {
             setUser(await getMyUserInfo());
 
-            const response = await retrieveDoctor(doctorId);
-            console.log("DOCTOR RESPONSE:", response);
+            const response = await getPersonalDoctorInfo();
+            console.log("PERSONAL DOCTOR", response)
             setDoctor(response);
         };
 
@@ -45,15 +37,15 @@ export default function DoctorPage() {
     }, [doctorId]);
 
     return (
-        <>
+        <LayoutComponent>
             {doctor ? (
-            <LayoutComponent>
                 <main>
                     <h2 style={{
                         fontWeight: '500',
                         margin: '1rem 0'
-                    }}>Doctor Info</h2>
+                    }}>Personal Information</h2>
                     <Divider/>
+                    <ChangePersonalInfoModal/>
                     <Card hoverable style={cardStyle} styles={{body: {padding: 0, overflow: 'hidden', cursor:'default'}}}>
                         <Flex justify="space-between">
                             <Image
@@ -120,7 +112,8 @@ export default function DoctorPage() {
                         ]}
                     />
                 </main>
-            </LayoutComponent>) : <LoadingPage/>}
-        </>
+            ) : <LoadingPage/>
+            }
+        </LayoutComponent>
     );
 }

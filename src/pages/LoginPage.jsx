@@ -1,24 +1,25 @@
-import { Button, Card, Form, Input } from "antd";
+import {Button, Card, Form, Input} from "antd";
 import Navbar from "../components/Navbar";
-import { login } from "../api/handleLogin";
-import { useNavigate } from "react-router-dom";
-
-
+import {useLogin} from "../api/handleAuthentication.jsx";
+import {useNavigate} from "react-router-dom";
 
 
 export default function LoginPage() {
     const navigate = useNavigate();
 
+    const login = useLogin();
+
+
     const onFinish = async (values) => {
-        const { email, password } = values;
+        const {email, password} = values;
         try {
             const response = await login(email, password);
             console.log("Success:", response);
 
             if (response.role === 'DOCTOR') {
-                navigate("/doctors")
+                navigate("/my/doctors")
             } else if (response.role === "PATIENT") {
-                navigate("/patients")
+                navigate("/my/patients")
             }
         } catch (error) {
             console.log("Failed:", error);
@@ -31,10 +32,10 @@ export default function LoginPage() {
 
     return (
         <>
-            <Navbar className='navbar--fixed' />
+            <Navbar className='navbar--fixed'/>
             <div className="login_form">
                 <Card
-                    title={<p style={{ textAlign: 'center', fontSize: '1.2rem' }}>Login</p>}
+                    title={<p style={{textAlign: 'center', fontSize: '1.2rem'}}>Login</p>}
                     className="login_form__card"
                 >
                     <Form
@@ -62,7 +63,7 @@ export default function LoginPage() {
                                 },
                             ]}
                         >
-                            <Input />
+                            <Input/>
                         </Form.Item>
 
                         <Form.Item
@@ -75,7 +76,7 @@ export default function LoginPage() {
                                 },
                             ]}
                         >
-                            <Input.Password />
+                            <Input.Password/>
                         </Form.Item>
                         <Form.Item
                             wrapperCol={{

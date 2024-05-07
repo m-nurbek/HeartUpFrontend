@@ -1,4 +1,4 @@
-import {Spin, Table} from "antd";
+import {Divider, Spin, Table} from "antd";
 import {getAllPatients} from "../api/handlePatients";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
@@ -93,7 +93,11 @@ export default function AllPatientsPage() {
             {isLoading && <Spin fullscreen/>}
             <LayoutComponent>
                 <div className="allpatients_page__info">
-                    <h2>Patients</h2>
+                    <h2 style={{
+                        fontWeight: '500',
+                        margin: '1rem 0'
+                    }}>Patients</h2>
+                    <Divider/>
                     <Table
                         dataSource={dataSource}
                         columns={columns}

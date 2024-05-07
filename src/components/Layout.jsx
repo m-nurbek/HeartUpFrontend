@@ -1,51 +1,96 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {LaptopOutlined, NotificationOutlined, UserOutlined} from '@ant-design/icons';
 import {Breadcrumb, Layout, Menu, theme} from 'antd';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {getMyUserInfo, useLogout} from "../api/handleAuthentication.jsx";
 
 
-const {Header, Content, Sider} = Layout;
-
-const navbarItems = [
-    {
-        key: '1',
-        label: 'Personal Page',
-    },
-    {
-        key: '2',
-        label: 'Log out',
-    },
-];
-
-const sidebarItems = [
-    {
-        key: 'dashboard',
-        icon: React.createElement(UserOutlined),
-        label: 'Dashboard',
-    },
-    {
-        key: 'patients',
-        icon: React.createElement(LaptopOutlined),
-        label: 'Patients',
-        children: [
-            {
-                key: '5',
-                label: 'Appointments',
-            },
-            {
-                key: '6',
-                label: 'All Patients',
-            },
-        ],
-    },
-    {
-        key: 'sub3',
-        icon: React.createElement(NotificationOutlined),
-        label: 'Notifications',
-    },
-];
+const {Header, Content, Sider, Footer} = Layout;
 
 export default function LayoutComponent({children}) {
+    const logout = useLogout();
+    const [myInfo, setMyInfo] = useState(null);
+    const [siderSelectedKey, setSiderSelectedKey] = useState(['dashboard']);
+    const [personalPageLink, setPersonalPageLink] = useState('/my/doctors/');
+
+    useEffect( () => {
+        const fetch = async () => {
+            const user = await getMyUserInfo();
+            if (user.role === 'DOCTOR') {
+                setPersonalPageLink('/my/doctors/');
+            } else {
+                setPersonalPageLink('/my/patients/');
+            }
+        }
+        fetch();
+    }, []);
+
+    const sidebarItems = [
+        {
+            key: 'dashboard',
+            icon: React.createElement(UserOutlined),
+            label: <Link to={personalPageLink} onClick={() => {
+                setSiderSelectedKey(['dashboard']);
+            }}>Profile</Link>,
+        },
+        {
+            key: 'patients',
+            icon: React.createElement(LaptopOutlined),
+            label: 'Hospital',
+            children: [
+                {
+                    key: '5',
+                    label: <Link to={""} onClick={() => {
+                        setSiderSelectedKey(['5']);
+                    }}>My Appointments</Link>,
+                },
+                {
+                    key: '6',
+                    label: <Link to={"/patients"} onClick={() => {
+                        setSiderSelectedKey(['6']);
+                    }}>Patients</Link>,
+                },
+                {
+                    key: '7',
+                    label: <Link to={"/doctors"} onClick={() => {
+                        setSiderSelectedKey(['7']);
+                    }}>Doctors</Link>,
+                },
+            ],
+        },
+        {
+            key: 'sub3',
+            icon: React.createElement(NotificationOutlined),
+            label: 'Notifications',
+        },
+    ];
+
+    const getMyUserInfoFunc = () => {
+        const func = async () => {
+            setMyInfo((await getMyUserInfo()));
+        }
+
+        func();
+    }
+
+    useEffect(() => {
+        getMyUserInfoFunc();
+    }, []);
+
+    const navbarItems = [
+        {
+            key: '1',
+            label: myInfo && `Hello, ${myInfo.role === 'DOCTOR' ? 'Dr.' : ''} ${myInfo.first_name}!`,
+        },
+        {
+            key: '2',
+            label: 'Log out',
+            onClick: async () => {
+                await logout()
+            },
+        },
+    ];
+
     const {
         token: {colorBgContainer, borderRadiusLG},
     } = theme.useToken();
@@ -77,7 +122,11 @@ export default function LayoutComponent({children}) {
                     defaultSelectedKeys={['2']}
                     items={navbarItems}
                     style={{
-                        minWidth: '200px',
+                        minWidth: '300px',
+                        width: 'fit-content',
+                        display: 'flex',
+                        justifyContent: 'end',
+                        gap: '0.5rem',
                         fontSize: '1rem',
                     }}
                 />
@@ -93,7 +142,7 @@ export default function LayoutComponent({children}) {
                     <Menu
                         theme={'dark'}
                         mode="inline"
-                        defaultSelectedKeys={['dashboard']}
+                        defaultSelectedKeys={siderSelectedKey}
                         defaultOpenKeys={['patients']}
                         style={{
                             height: '100%',
@@ -108,26 +157,26 @@ export default function LayoutComponent({children}) {
                         padding: '0 24px 24px',
                     }}
                 >
-                    <Breadcrumb
-                        style={{
-                            margin: '16px 0',
-                        }}
-                    >
-                        <Breadcrumb.Item>Home</Breadcrumb.Item>
-                        <Breadcrumb.Item>List</Breadcrumb.Item>
-                        <Breadcrumb.Item>App</Breadcrumb.Item>
-                    </Breadcrumb>
                     <Content
                         style={{
                             padding: 24,
                             margin: 0,
+                            marginTop: '1.6rem',
                             minHeight: 280,
                             background: colorBgContainer,
                             borderRadius: borderRadiusLG,
+                            fontSize: '1rem',
                         }}
                     >
                         {children}
                     </Content>
+                    <Footer
+                        style={{
+                            textAlign: 'center',
+                        }}
+                    >
+                        ©{new Date().getFullYear()} Created by Nurbek Malikov
+                    </Footer>
                 </Layout>
             </Layout>
         </Layout>

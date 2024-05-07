@@ -1,4 +1,4 @@
-import { Avatar, Button, Descriptions, Table } from 'antd';
+import {Avatar, Button, Divider, Table} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { retrievePatient } from '../api/handlePatients';
@@ -6,15 +6,15 @@ import { useEffect, useState } from 'react';
 import { retrievePatientDiagnosisHistory } from '../api/handleMLs';
 import { DiagnosisColumns, TransformToDiagnosisDataSource } from '../shared/PatientDiagnosisHistoryColumns';
 import LoadingPage from './LoadingPage';
-import Navbar from '../components/Navbar';
-import SideMenu from '../components/SideMenu';
 import LayoutComponent from "../components/Layout.jsx";
+import {getMyUserInfo} from "../api/handleAuthentication.jsx";
 
 
 export default function PatientPage() {
     const [patient, setPatient] = useState(null);
     const [ml_history, setMlHistory] = useState(null);
     const { patientId } = useParams();
+    const [currentUser, setCurrentUser] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -25,15 +25,17 @@ export default function PatientPage() {
             let transformed_diagnosis_data = ml_history_response.map(TransformToDiagnosisDataSource);
             setPatient(response);
             setMlHistory(transformed_diagnosis_data);
+
+            setCurrentUser(await getMyUserInfo())
         };
 
         fetchData();
     }, [patientId]);
 
     return (
-        patient ?
             <>
                 <LayoutComponent>
+                    {patient && currentUser ?
                     <main>
                         <div className='patient_page__info'>
                             <Avatar size={240} className='patient_page__info__avatar' shape='square' icon={<UserOutlined />}
@@ -50,13 +52,10 @@ export default function PatientPage() {
                                     <p><span>Date Of Birth:</span> {patient.dob}</p>
                                     <p><span>Sex:</span> {patient.sex}</p>
                                 </div>
-                                <div className='superviser'>
-                                    <p className='superviser__info'>Supervised by<br /><span>Doctor Name</span></p>
-                                </div>
                             </div>
                         </div>
-
-                        <Button type='primary' style={{
+                        <Divider/>
+                        {currentUser.role !=='PATIENT' && <Button type='primary' style={{
                             margin: '1em',
                             padding: '0.5em 1em 2em',
                             textAlign: 'center',
@@ -65,12 +64,10 @@ export default function PatientPage() {
                             onClick={() => navigate(`/models/${patientId}`)}
                         >
                             New Diagnosis
-                        </Button>
+                        </Button>}
                         <Table layout="vertical" dataSource={ml_history} columns={DiagnosisColumns} bordered />
-                    </main>
+                    </main> : <LoadingPage />}
                 </LayoutComponent>
             </>
-
-            : <LoadingPage />
     );
 }

@@ -1,4 +1,4 @@
-import { PATIENTS } from "./constants/apiEndpoints";
+import {PATIENTS, PERSONAL_PATIENT_INFO} from "./constants/apiEndpoints";
 import axiosRequest from "./axiosConfig";
 
 
@@ -7,7 +7,17 @@ export async function getAllPatients() {
         let response = await axiosRequest.get(PATIENTS, {
             body: {}
         });
-        console.log("ALL PATIENTS: " + response.data )
+        return response.data;
+    } catch (error) {
+        console.log(error.response);
+    }
+}
+
+export async function getPersonalPatientInfo() {
+    try {
+        let response = await axiosRequest.get(PERSONAL_PATIENT_INFO, {
+            body: {}
+        });
         return response.data;
     } catch (error) {
         console.log(error.response);
@@ -19,7 +29,6 @@ export async function retrievePatient(id) {
         let response = await axiosRequest.get(PATIENTS + `${id}`, {
             body: {}
         });
-        console.log("PATIENT: " + response.data )
         return response.data;
     } catch (error) {
         console.log(error.response);

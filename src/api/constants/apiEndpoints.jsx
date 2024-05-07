@@ -38,6 +38,10 @@ export const SET_NEW_PASSWORD = '/api/auth/set-new-password/';
 // Accepts: JSON object with "refresh_token"
 // Returns: Empty body | STATUS 204
 export const LOGOUT = '/api/auth/logout/';
+
+// GET
+// Accepts: Empty body
+// Returns: JSON object with "id", "email", "first_name", "last_name", "role" | STATUS 200
 export const USERS = '/api/auth/users/';
 
 
@@ -55,12 +59,15 @@ export const PATIENTS_BY_ID = (patient_id) => '/users/patients/' + patient_id;
 // GET, POST
 // Accepts: Empty body, JSON object
 // Returns: JSON array of doctor objects [{ "id", "photo", "phone", "specialization", "aboutme", "work_location", "user", "first_name", "last_name", "email", "role" }, ...]
-export const DOCTORS = '/users/doctors/';
+export const DOCTORS = `/users/doctors/`;
 
 // GET, POST, PUT/PATCH, DELETE
 // Accepts: Empty body, JSON object, JSON object, Empty body
 // Returns: JSON doctor object { "id", "photo", "phone", "specialization", "aboutme", "work_location", "user", "first_name", "last_name", "email", "role" }
 export const DOCTORS_BY_ID = (doctor_id) => '/users/doctors/' + doctor_id;
+
+export const PERSONAL_DOCTOR_INFO = '/users/personal-info/doctor/';
+export const PERSONAL_PATIENT_INFO = '/users/personal-info/patient/';
 
 
 /*      ML API Endpoints     */
