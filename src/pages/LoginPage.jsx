@@ -2,10 +2,12 @@ import {Button, Card, Form, Input} from "antd";
 import Navbar from "../components/Navbar";
 import {useLogin} from "../api/handleAuthentication.jsx";
 import {useNavigate} from "react-router-dom";
+import {useState} from "react";
 
 
 export default function LoginPage() {
     const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const login = useLogin();
 
@@ -14,7 +16,6 @@ export default function LoginPage() {
         const {email, password} = values;
         try {
             const response = await login(email, password);
-            console.log("Success:", response);
 
             if (response.role === 'DOCTOR') {
                 navigate("/my/doctors")
@@ -22,7 +23,7 @@ export default function LoginPage() {
                 navigate("/my/patients")
             }
         } catch (error) {
-            console.log("Failed:", error);
+            setErrorMessage('Incorrect email or password. Please try again.')
         }
     };
 
@@ -78,6 +79,12 @@ export default function LoginPage() {
                         >
                             <Input.Password/>
                         </Form.Item>
+                        {errorMessage && <div style={{
+                            color: 'red',
+                            margin: '0 auto',
+                            marginTop: '10px',
+                            width: 'fit-content'
+                        }}>{errorMessage}</div>}
                         <Form.Item
                             wrapperCol={{
                                 offset: 8,
@@ -88,6 +95,7 @@ export default function LoginPage() {
                                 Submit
                             </Button>
                         </Form.Item>
+
                     </Form>
                 </Card>
             </div>

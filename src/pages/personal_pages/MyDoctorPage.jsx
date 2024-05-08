@@ -38,7 +38,8 @@ export default function MyDoctorPage() {
         const fetchData = async () => {
             setUser(await getMyUserInfo());
             setDoctor(await getPersonalDoctorInfo());
-            setMyTimeSlots(await getMyTimeSlotsDoctor());
+            const timeSlots = await getMyTimeSlotsDoctor();
+            setMyTimeSlots(Array.isArray(timeSlots) ? timeSlots : []);
         };
 
         fetchData();
