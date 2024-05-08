@@ -76,6 +76,8 @@ export const refreshToken = async () => {
             localStorage.setItem("access_token", new_access_token);
 
             axiosRequest.defaults.headers.common['Authorization'] = `Bearer ${new_access_token}`;
+
+            return new_access_token;
         } catch (error) {
             console.error("Error during refresh token", error);
             throw error;

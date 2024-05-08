@@ -1,12 +1,15 @@
 import LayoutComponent from "../../components/Layout.jsx";
 import {useEffect, useState} from "react";
 import {getPersonalDoctorInfo} from "../../api/handleDoctors.jsx";
-import {Button, Card, Descriptions, Divider, Flex, Image, Tabs, Typography} from "antd";
+import {Button, Card, Descriptions, Divider, Flex, Image, Pagination, Tabs, Typography} from "antd";
 import LoadingPage from "../LoadingPage.jsx";
 import getSpecializationTitle from "../../api/constants/specializations.js";
 import {useParams} from "react-router-dom";
 import {getMyUserInfo} from "../../api/handleAuthentication.jsx";
 import {ChangePersonalInfoModal} from "../../components/ChangePersonalInfoModal.jsx";
+import DoctorTimeSlot from "../../components/DoctorTimeSlot.jsx";
+import {CreateNewTimeSlot} from "../../components/CreateNewTimeSlot.jsx";
+import {getMyTimeSlotsDoctor} from "../../api/handleAppointments.jsx";
 
 
 const cardStyle = {
@@ -23,14 +26,19 @@ export default function MyDoctorPage() {
     const [doctor, setDoctor] = useState(null);
     const {doctorId} = useParams();
     const [user, setUser] = useState(null);
+    const [myTimeSlots, setMyTimeSlots] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 7;
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
             setUser(await getMyUserInfo());
-
-            const response = await getPersonalDoctorInfo();
-            console.log("PERSONAL DOCTOR", response)
-            setDoctor(response);
+            setDoctor(await getPersonalDoctorInfo());
+            setMyTimeSlots(await getMyTimeSlotsDoctor());
         };
 
         fetchData();
@@ -46,7 +54,8 @@ export default function MyDoctorPage() {
                     }}>Personal Information</h2>
                     <Divider/>
                     <ChangePersonalInfoModal/>
-                    <Card hoverable style={cardStyle} styles={{body: {padding: 0, overflow: 'hidden', cursor:'default'}}}>
+                    <Card hoverable style={cardStyle}
+                          styles={{body: {padding: 0, overflow: 'hidden', cursor: 'default'}}}>
                         <Flex justify="space-between">
                             <Image
                                 width={300}
@@ -76,12 +85,12 @@ export default function MyDoctorPage() {
                         </Flex>
                     </Card>
                     <Tabs
-                        defaultActiveKey="1"
+                        defaultActiveKey="3"
                         type="card"
                         size={'large'}
                         style={{
                             fontSize: '1.1rem',
-                            marginTop: '1.4rem',
+                            marginTop: '3rem',
                         }}
                         items={[
                             {
@@ -106,8 +115,32 @@ export default function MyDoctorPage() {
                             },
                             {
                                 key: '3',
-                                label: 'Available Appointments',
-                                children: <p>Monday - Friday<br/>(9am - 6pm)</p>
+                                label: 'Time Slots',
+                                children: <>
+                                    <div style={{display: 'flex', gap: '1rem', flexWrap: 'wrap'}}>
+                                        <CreateNewTimeSlot/>
+
+                                        {myTimeSlots &&
+                                            myTimeSlots
+                                                .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                                                .map((timeSlot, index) => (
+                                                    <DoctorTimeSlot
+                                                        key={index}
+                                                        date={timeSlot.date}
+                                                        start_time={timeSlot.start_time}
+                                                        end_time={timeSlot.end_time}
+                                                    />
+                                                ))
+                                        }
+                                    </div>
+                                    <Pagination
+                                        style={{marginTop: '1rem', textAlign: 'center'}}
+                                        current={currentPage}
+                                        total={myTimeSlots.length}
+                                        pageSize={itemsPerPage}
+                                        onChange={handlePageChange}
+                                    />
+                                </>
                             },
                         ]}
                     />

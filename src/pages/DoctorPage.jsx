@@ -6,7 +6,7 @@ import {
     Flex,
     Tabs,
     Descriptions,
-    Image
+    Image, Pagination
 } from "antd";
 import {retrieveDoctor} from "../api/handleDoctors";
 import {useEffect, useState} from "react";
@@ -15,6 +15,10 @@ import LoadingPage from "./LoadingPage";
 import LayoutComponent from "../components/Layout.jsx";
 import getSpecializationTitle from "../api/constants/specializations.js";
 import {getMyUserInfo} from "../api/handleAuthentication.jsx";
+import {CreateNewTimeSlot} from "../components/CreateNewTimeSlot.jsx";
+import DoctorTimeSlot from "../components/DoctorTimeSlot.jsx";
+import {getTimeSlotsByDoctorId} from "../api/handleAppointments.jsx";
+import TimeSlotSelectionModal from "../components/TimeSlotSelectionModal.jsx";
 
 
 const cardStyle = {
@@ -31,14 +35,22 @@ export default function DoctorPage() {
     const [doctor, setDoctor] = useState(null);
     const {doctorId} = useParams();
     const [user, setUser] = useState(null);
+    const [timeSlots, setTimeSlots] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 7;
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
 
     useEffect(() => {
         const fetchData = async () => {
             setUser(await getMyUserInfo());
-
-            const response = await retrieveDoctor(doctorId);
-            console.log("DOCTOR RESPONSE:", response);
-            setDoctor(response);
+            setTimeSlots(await getTimeSlotsByDoctorId(doctorId));
+            setDoctor(await retrieveDoctor(doctorId));
         };
 
         fetchData();
@@ -77,6 +89,7 @@ export default function DoctorPage() {
                                 <Button
                                     type="primary"
                                     disabled={user.role === "DOCTOR" || user.role === "ADMIN"}
+                                    onClick={() => setIsModalVisible(true)}
                                 >
                                     Book An Appointment
                                 </Button>
@@ -115,12 +128,38 @@ export default function DoctorPage() {
                             {
                                 key: '3',
                                 label: 'Available Appointments',
-                                children: <p>Monday - Friday<br/>(9am - 6pm)</p>
+                                children: <>
+                                    <div style={{display: 'flex', gap: '1rem', flexWrap: 'wrap'}}>
+                                        <CreateNewTimeSlot/>
+
+                                        {timeSlots  && Array.isArray(timeSlots) &&
+                                            timeSlots
+                                                .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                                                .map((timeSlot, index) => (
+                                                    <DoctorTimeSlot
+                                                        key={index}
+                                                        date={timeSlot.date}
+                                                        start_time={timeSlot.start_time}
+                                                        end_time={timeSlot.end_time}
+                                                    />
+                                                ))
+                                        }
+                                    </div>
+                                    <Pagination
+                                        style={{marginTop: '1rem', textAlign: 'center'}}
+                                        current={currentPage}
+                                        total={timeSlots.length}
+                                        pageSize={itemsPerPage}
+                                        onChange={handlePageChange}
+                                    />
+                                </>
                             },
                         ]}
                     />
                 </main>
             </LayoutComponent>) : <LoadingPage/>}
+
+            <TimeSlotSelectionModal setModalOpen={setIsModalVisible} modalOpen={isModalVisible} doctorId={doctorId}/>
         </>
     );
 }

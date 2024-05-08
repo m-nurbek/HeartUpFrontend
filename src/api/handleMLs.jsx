@@ -65,8 +65,6 @@ export const postMLDiagnosis = async (patient_id, ucl, ecg_file, echo_net_file, 
                 }
             }
         );
-
-        message.success("Success");
         return response.data;
     } catch (error) {
         console.error(error);

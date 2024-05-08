@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {LaptopOutlined, NotificationOutlined, UserOutlined} from '@ant-design/icons';
-import {Breadcrumb, Layout, Menu, theme} from 'antd';
+import {Layout, Menu, theme} from 'antd';
 import {Link, useNavigate} from "react-router-dom";
 import {getMyUserInfo, useLogout} from "../api/handleAuthentication.jsx";
 
@@ -12,18 +12,8 @@ export default function LayoutComponent({children}) {
     const [myInfo, setMyInfo] = useState(null);
     const [siderSelectedKey, setSiderSelectedKey] = useState(['dashboard']);
     const [personalPageLink, setPersonalPageLink] = useState('/my/doctors/');
+    const [appointmentLink, setAppointmentLink] = useState('/appointments/');
 
-    useEffect( () => {
-        const fetch = async () => {
-            const user = await getMyUserInfo();
-            if (user.role === 'DOCTOR') {
-                setPersonalPageLink('/my/doctors/');
-            } else {
-                setPersonalPageLink('/my/patients/');
-            }
-        }
-        fetch();
-    }, []);
 
     const sidebarItems = [
         {
@@ -37,10 +27,10 @@ export default function LayoutComponent({children}) {
             key: 'patients',
             icon: React.createElement(LaptopOutlined),
             label: 'Hospital',
-            children: [
+            children: myInfo && myInfo.role === 'DOCTOR' ? [
                 {
                     key: '5',
-                    label: <Link to={""} onClick={() => {
+                    label: <Link to={appointmentLink} onClick={() => {
                         setSiderSelectedKey(['5']);
                     }}>My Appointments</Link>,
                 },
@@ -56,18 +46,39 @@ export default function LayoutComponent({children}) {
                         setSiderSelectedKey(['7']);
                     }}>Doctors</Link>,
                 },
+            ] : [
+                {
+                    key: '5',
+                    label: <Link to={appointmentLink} onClick={() => {
+                        setSiderSelectedKey(['5']);
+                    }}>My Appointments</Link>,
+                },
+                {
+                    key: '7',
+                    label: <Link to={"/doctors"} onClick={() => {
+                        setSiderSelectedKey(['7']);
+                    }}>Doctors</Link>,
+                },
             ],
         },
-        {
-            key: 'sub3',
-            icon: React.createElement(NotificationOutlined),
-            label: 'Notifications',
-        },
+        // {
+        //     key: 'sub3',
+        //     icon: React.createElement(NotificationOutlined),
+        //     label: 'Notifications',
+        // },
     ];
 
     const getMyUserInfoFunc = () => {
         const func = async () => {
-            setMyInfo((await getMyUserInfo()));
+            const user = await getMyUserInfo();
+            setMyInfo(user);
+            if (user.role === 'DOCTOR') {
+                setPersonalPageLink('/my/doctors/');
+                setAppointmentLink('/appointments/')
+            } else {
+                setPersonalPageLink('/my/patients/');
+                setAppointmentLink('/patient/appointments/')
+            }
         }
 
         func();

@@ -82,3 +82,30 @@ export const PERSONAL_PATIENT_INFO = '/users/personal-info/patient/';
 export const ML_DIAGNOSIS = '/api/ml/ml-diagnosis-history/';
 export const ML_DIAGNOSIS_BY_ID = (diagnosis_id) => '/api/ml/ml-diagnosis-history/' + diagnosis_id;
 export const ML_DIAGNOSIS_BY_PATIENT = (patient_id) => '/api/ml/ml-diagnosis-history/patient/' + patient_id; 
+
+
+
+/*      Appointment System     */
+export const DOCTOR_TIME_SLOTS = '/api/appointment/create-time-slots/';
+
+// GET
+// Accepts: { "date" }
+export const DOCTOR_TIME_SLOTS_BY_DATE = '/api/appointment/time-slots-by-date/';
+
+export const PENDING_APPOINTMENTS_FOR_DOCTOR = '/api/appointment/pending/my-doctor/';
+export const APPROVED_APPOINTMENTS_FOR_DOCTOR = '/api/appointment/approved/my-doctor/';
+export const REJECTED_APPOINTMENTS_FOR_DOCTOR = '/api/appointment/rejected/my-doctor/';
+
+export const APPROVE_APPOINTMENT = '/api/appointment/approve-appointment/';
+export const REJECT_APPOINTMENT = 'api/appointment/reject-appointment/';
+
+export const DOCTOR_TIME_SLOTS_BY_ID = (doctor_id) => '/api/appointment/doctor-slots-by-id/' + doctor_id;
+export const DOCTOR_TIME_SLOTS_BY_ID_DATE = (doctor_id, date) => '/api/appointment/doctor-slots-by-id-date/' + doctor_id + '/' + date;
+
+export const BOOK_SLOT = '/api/appointment/book-appointment/'
+
+export const BUSY_SLOTS_BY_DOCTOR_ID = (doctor_id) => '/api/appointment/busy-slots/' + doctor_id + '/';
+
+export const PENDING_APPOINTMENTS_BY_PATIENT = '/api/appointment/pending/my/'
+export const ACCEPTED_APPOINTMENTS_BY_PATIENT = '/api/appointment/approved/my/'
+export const REJECTED_APPOINTMENTS_BY_PATIENT = '/api/appointment/rejected/my/'

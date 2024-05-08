@@ -17,6 +17,8 @@ import {Provider} from "react-redux";
 import {accessTokenReducer, refreshTokenReducer} from "./redux/tokensSlice.js";
 import {ConfigProvider} from "antd";
 import MyPatientPage from "./pages/personal_pages/MyPatientPage.jsx";
+import AppointmentsPage from "./pages/AppointmentsPage.jsx";
+import PatientAppointmentsPage from "./pages/PatientAppointmentsPage.jsx";
 
 
 const App = lazy(() => import('./App.jsx'));
@@ -67,6 +69,20 @@ const router = createBrowserRouter([
         element: <MyPatientPage/>,
         errorElement: <ErrorPage/>,
     },
+    {
+        path: '*',
+        element: <ErrorPage/>,
+    },
+    {
+        path: '/appointments',
+        element: <AppointmentsPage/>,
+        errorElement: <ErrorPage/>,
+    },
+    {
+        path: '/patient/appointments/',
+        element: <PatientAppointmentsPage/>,
+        errorElement: <ErrorPage/>,
+    }
 ]);
 
 const store = configureStore({

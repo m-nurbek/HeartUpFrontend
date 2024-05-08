@@ -81,10 +81,11 @@ export default function AllDoctorsPage() {
                                 (!filter.name || `${doctor.first_name} ${doctor.last_name}`.includes(filter.name)) &&
                                 (!filter.specialization || doctor.specialization === filter.specialization)
                             )
-                            .map((doctor) => {
+                            .map((doctor, index) => {
                             return (
                                 // eslint-disable-next-line react/jsx-key
                                 <Card
+                                    key={index}
                                     hoverable
                                     style={{width: 300}}
                                     cover={<img src={doctor.photo ? doctor.photo : '/doctorImage.jpg'}
