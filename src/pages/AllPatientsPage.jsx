@@ -2,8 +2,6 @@ import {Divider, Spin, Table} from "antd";
 import {getAllPatients} from "../api/handlePatients";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import Navbar from "../components/Navbar";
-import SideMenu from "../components/SideMenu";
 import LayoutComponent from "../components/Layout.jsx";
 
 const columns = [

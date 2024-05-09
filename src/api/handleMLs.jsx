@@ -1,7 +1,5 @@
 import axiosRequest from './axiosConfig';
 import { ML_DIAGNOSIS, ML_DIAGNOSIS_BY_PATIENT } from './constants/apiEndpoints';
-import { message } from 'antd';
-
 
 export const retrievePatientDiagnosisHistory = async (patient_id) => {
     try {

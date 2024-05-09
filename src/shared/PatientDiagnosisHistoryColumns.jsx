@@ -1,5 +1,3 @@
-
-
 export const DiagnosisColumns = [
     {
         title: 'Date',

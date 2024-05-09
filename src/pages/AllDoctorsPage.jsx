@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import {getAllDoctors} from "../api/handleDoctors";
 import {Button, Card, Divider, Form, Input, Select, Spin} from "antd";
 import Meta from "antd/es/card/Meta";
-import Navbar from "../components/Navbar";
 import {useNavigate} from "react-router-dom";
 import LayoutComponent from "../components/Layout.jsx";
 import getSpecializationTitle, {specializations} from "../api/constants/specializations.js";

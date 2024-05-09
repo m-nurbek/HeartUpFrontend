@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {LaptopOutlined, NotificationOutlined, UserOutlined} from '@ant-design/icons';
+import {LaptopOutlined, UserOutlined} from '@ant-design/icons';
 import {Layout, Menu, theme} from 'antd';
 import {Link, useNavigate} from "react-router-dom";
 import {getMyUserInfo, useLogout} from "../api/handleAuthentication.jsx";
