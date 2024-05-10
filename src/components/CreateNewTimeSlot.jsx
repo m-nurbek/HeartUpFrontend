@@ -29,14 +29,8 @@ export const CreateNewTimeSlot = () => {
     }, [timeSlots.start_time, timeSlots.end_time]);
 
     const createTimeSlot = async () => {
-        console.log("CREATE TIME SLOT");
-
-        console.log(timeSlots);
         const formattedDate = dayjs(selectedValue.toDate()).format('YYYY-MM-DD');
-        console.log(formattedDate);
-
         const response = await createTimeSlots(formattedDate, timeSlots.start_time, timeSlots.end_time);
-        console.log(response);
     }
 
     const draggleRef = useRef(null);

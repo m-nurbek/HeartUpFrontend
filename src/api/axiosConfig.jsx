@@ -2,7 +2,7 @@ import axios from 'axios';
 import { refreshToken } from "./handleAuthentication.jsx";
 
 const axiosRequest = axios.create({
-    baseURL: 'https://d57d-87-255-216-75.ngrok-free.app/',
+    baseURL: 'http://localhost:8080/',
 });
 
 let isRefreshing = false;

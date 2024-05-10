@@ -53,8 +53,6 @@ export const postMLDiagnosis = async (patient_id, ucl, ecg_file, echo_net_file, 
         data.append('ecg.ecg_file', ecg_file, ecg_file.name);
         data.append('echo_net.echo_net_file', echo_net_file, echo_net_file.name);
 
-        console.log("RESPONSE " +  patient_id)
-
         const response = await axiosRequest.post(ML_DIAGNOSIS,
             data,
             {

@@ -18,6 +18,7 @@ export async function getPersonalDoctorInfo() {
         let response = await axiosRequest.get(PERSONAL_DOCTOR_INFO, {
             body: {}
         });
+        console.log(response);
         return response.data;
     } catch (error) {
         console.log(error.response);
@@ -35,7 +36,6 @@ export async function updatePersonalDoctorInfo(phone, specialization, aboutme, w
     data.append('email', email);
 
     if (photo) {
-        console.log("PHOTO", photo)
         data.append('photo', photo, photo.name);
     }
 

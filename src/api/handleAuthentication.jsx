@@ -15,8 +15,6 @@ export const useLogin = () => {
                 password: password
             });
 
-            console.log("Login response", response.data)
-
             const access_token = response.data.access_tokens;
             const refresh_token = response.data.refresh_tokens;
 
@@ -113,7 +111,6 @@ export const getCurrentUserId = () => {
 export const getMyUserInfo = async () => {
     try {
         const response = await axiosRequest.get(USERS);
-        console.log("User info", response.data);
         return response.data;
     } catch (error) {
         console.error("Error during get user info", error);

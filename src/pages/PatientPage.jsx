@@ -20,7 +20,6 @@ export default function PatientPage() {
     useEffect(() => {
         const fetchData = async () => {
             const response = await retrievePatient(patientId);
-            console.log("ALL PATIENTS:", response);
             const ml_history_response = await retrievePatientDiagnosisHistory(patientId);
             let transformed_diagnosis_data = ml_history_response.map(TransformToDiagnosisDataSource);
             setPatient(response);
